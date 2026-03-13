@@ -1,8 +1,8 @@
-package com.frnz7.restSpring.helpers;
+package com.frnz7.restSpring.utils;
 
 import com.frnz7.restSpring.exception.UnsupportedMathOperationException;
 
-public class ConvertToDouble {
+public class NumberUtils {
 
     public static double convertNumberToDouble(String strNumber){
         if(strNumber == null || strNumber.isEmpty()){
@@ -10,6 +10,14 @@ public class ConvertToDouble {
         }
         String number = strNumber.replace(",", ".");
         return Double.parseDouble(number);
+    }
+
+    public static boolean isNumeric(String strNumber){
+        if(strNumber == null || strNumber.isEmpty()){
+            return false;
+        }
+        String number = strNumber.replace(",",".");
+        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
     }
 
 }
