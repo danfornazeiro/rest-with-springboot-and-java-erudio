@@ -1,6 +1,7 @@
 package com.frnz7.restSpring.exception.handler;
 
 import com.frnz7.restSpring.exception.ExceptionResponse;
+import com.frnz7.restSpring.exception.ResoureceNotFoundException;
 import com.frnz7.restSpring.exception.UnsupportedMathOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+   }
+
+   @ExceptionHandler(ResoureceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundExceptions(Exception ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
    }
 
 }

@@ -1,1 +1,20 @@
 
+spring:
+  application:
+    name: restSpring
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/rest_with_boot
+    username: postgres
+    password: Dy@515286
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+    open-in-view: false
+logging:
+  level:
+    com.frnz7.restSpring: DEBUG
