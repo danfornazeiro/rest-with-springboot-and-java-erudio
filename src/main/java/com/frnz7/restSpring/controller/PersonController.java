@@ -1,15 +1,16 @@
 package com.frnz7.restSpring.controller;
 
-import com.frnz7.restSpring.model.Person;
+import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.service.PersonServices;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
 
     private final PersonServices personServices;
@@ -18,24 +19,30 @@ public class PersonController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return personServices.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable Long id) {
-        return personServices.findById(id);
+    public PersonDTO findById(@PathVariable Long id) {
+        var person  = personServices.findById(id);
+        person.setBirthDay(new Date());
+        //person.setPhoneNumber("+55 (34) 98765-4321 ");
+        person.setPhoneNumber("");
+        person.setLastName(null);
+        return person;
     }
 
-    @PostMapping()
-    public Person create(@RequestBody Person person){
+    @PostMapping(value = "/v2")
+    public PersonDTO create(@RequestBody PersonDTO person){
         return personServices.create(person);
     }
+
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person update(@RequestBody Person person) {
+    public PersonDTO update(@RequestBody PersonDTO person) {
         return personServices.update(person);
     }
 
