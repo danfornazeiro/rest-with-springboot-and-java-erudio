@@ -28,7 +28,7 @@ public class PersonDTO implements Serializable {
     //@JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
     //@JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String phoneNumber;
+    //private String phoneNumber;
     //@JsonFormat(pattern = "dd/MM/yyyy")
     //private Date birthDay;
     private String address;
@@ -63,14 +63,6 @@ public class PersonDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -91,11 +83,11 @@ public class PersonDTO implements Serializable {
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         PersonDTO personDTO = (PersonDTO) object;
-        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, phoneNumber, address, gender);
+        return Objects.hash(id, firstName, lastName, address, gender);
     }
 }
