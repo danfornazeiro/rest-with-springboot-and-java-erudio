@@ -11,12 +11,22 @@ public class WebConfig implements WebMvcConfigurer  {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         //via extension .xml,.json, are deprecated on spring 2.6
-        configurer.favorParameter(true)
+       /* configurer.favorParameter(true)
                 .parameterName("mediaType")
                 .ignoreAcceptHeader(true)
                 .useRegisteredExtensionsOnly(false)
                 .defaultContentType(MediaType.APPLICATION_JSON)
                 .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("xml", MediaType.APPLICATION_XML);
+        */
+
+        //header parameter
+            configurer.favorParameter(false)
+                    .ignoreAcceptHeader(false)
+                    .useRegisteredExtensionsOnly(false)
+                    .defaultContentType(MediaType.APPLICATION_JSON)
+                    .mediaType("json", MediaType.APPLICATION_JSON)
+                    .mediaType("xml", MediaType.APPLICATION_XML);
+
     }
 }
