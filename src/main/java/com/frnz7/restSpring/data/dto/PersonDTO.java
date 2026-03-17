@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Objects;
 
 //@JsonPropertyOrder({"id", "first_name", "last_name", "address", "gender" })
+//@JsonFilter("PersonFilter")
 public class PersonDTO implements Serializable {
 
 
@@ -24,16 +25,17 @@ public class PersonDTO implements Serializable {
     //@JsonProperty("first_name")
     private String firstName;
     //@JsonProperty("last_name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    //@JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    //@JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phoneNumber;
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date birthDay;
+    //@JsonFormat(pattern = "dd/MM/yyyy")
+    //private Date birthDay;
     private String address;
    // @JsonIgnore
-    @JsonSerialize(using = GenderSerializer.class)
+    //@JsonSerialize(using = GenderSerializer.class)
     private String gender;
+   //private String sensitiveData;
 
     public PersonDTO(){}
 
@@ -61,22 +63,6 @@ public class PersonDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == null || getClass() != object.getClass()) return false;
-        PersonDTO personDTO = (PersonDTO) object;
-        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(birthDay, personDTO.birthDay) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, phoneNumber, birthDay, address, gender);
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -85,12 +71,8 @@ public class PersonDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+    public String getAddress() {
+        return address;
     }
 
     public void setAddress(String address) {
@@ -105,4 +87,15 @@ public class PersonDTO implements Serializable {
         this.gender = gender;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) object;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, phoneNumber, address, gender);
+    }
 }
