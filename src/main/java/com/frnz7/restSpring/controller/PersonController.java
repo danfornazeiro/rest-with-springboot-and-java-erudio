@@ -27,7 +27,7 @@ public class PersonController {
     @GetMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE,  MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE
     })
-    public PersonDTO findById(@PathVariable Long id) {
+    public PersonDTO findById (@PathVariable Long id) {
         return personServices.findById(id);
     }
 
