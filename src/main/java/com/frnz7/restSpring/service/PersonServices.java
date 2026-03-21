@@ -5,6 +5,8 @@ import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.exception.ResoureceNotFoundException;
 import static com.frnz7.restSpring.mapper.ObjectMapper.parseListObjects;
 import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
+
+import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
 import com.frnz7.restSpring.model.Person;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -47,6 +49,9 @@ public class PersonServices {
 
 
     public PersonDTO create(PersonDTO person){
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
         logger.info("creating one person!");
 
         var entity = parseObject(person, Person.class);
@@ -60,6 +65,10 @@ public class PersonServices {
     }
 
     public PersonDTO update(PersonDTO person){
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
+
         logger.info("updating one person!");
         Person entity = personRepository.findById(person.getId()).orElseThrow(
                 () -> new ResoureceNotFoundException("No records found for this id")
