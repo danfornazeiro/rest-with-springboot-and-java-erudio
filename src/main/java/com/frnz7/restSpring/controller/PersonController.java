@@ -67,7 +67,7 @@ public class PersonController implements PersonControllerDocs {
     })
 
     @Override
-    public ResponseEntity<?> deleteAll(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
          personServices.delete(id);
          return ResponseEntity.noContent().build();
     }
