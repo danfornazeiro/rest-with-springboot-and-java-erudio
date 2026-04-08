@@ -1,9 +1,10 @@
-package com.frnz7.restSpring.service;
+package com.frnz7.restSpring.unitetests.service;
 
 import com.frnz7.restSpring.data.dto.BookDTO;
 import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.model.Books;
 import com.frnz7.restSpring.repository.BookRepository;
+import com.frnz7.restSpring.service.BookService;
 import com.frnz7.restSpring.unitetests.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

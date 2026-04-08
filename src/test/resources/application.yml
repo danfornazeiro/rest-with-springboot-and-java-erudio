@@ -1,0 +1,23 @@
+server:
+  port: 8888
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    com.frnz7.restSpring: DEBUG
+
+springdoc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true

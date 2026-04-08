@@ -1,9 +1,10 @@
-package com.frnz7.restSpring.service;
+package com.frnz7.restSpring.unitetests.service;
 
 import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
 import com.frnz7.restSpring.model.Person;
 import com.frnz7.restSpring.repository.PersonRepository;
+import com.frnz7.restSpring.service.PersonServices;
 import com.frnz7.restSpring.unitetests.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
