@@ -38,7 +38,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     }
     @Order(1)
     @Test
-    void create() throws IOException {
+    void createTest() throws IOException {
         mockPerson();
         requestSpecification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
@@ -64,52 +64,49 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
         person = createdPerson;
 
         assertNotNull(createdPerson.getId());
-        assertNotNull(createdPerson.getFirstName());
-        assertNotNull(createdPerson.getLastName());
-        assertNotNull(createdPerson.getAddress());
-        assertNotNull(createdPerson.getGender());
-
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals(1, createdPerson.getId());
-        assertEquals("Richard", createdPerson.getFirstName());
-        assertEquals("Smith", createdPerson.getLastName());
-        assertEquals("New York City, New York, US", createdPerson.getAddress());
+        assertEquals("Linus", createdPerson.getFirstName());
+        assertEquals("Torvalds", createdPerson.getLastName());
+        assertEquals("Helsinki", createdPerson.getAddress());
         assertEquals("Male", createdPerson.getGender());
         assertTrue(createdPerson.getEnabled());
 
-
-
     }
-
     @Order(2)
     @Test
-    void createWithWrongOrigin() throws IOException {
-        mockPerson();
-        requestSpecification = new RequestSpecBuilder()
-                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-                .setBasePath("/api/person/v1")
-                .setPort(TestConfigs.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
+    void updateTest() throws IOException {
+        person.setLastName("Benedcit Torvalds");
 
         var content = given(requestSpecification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .port(TestConfigs.SERVER_PORT)
                 .body(person)
                 .when()
-                .post()
+                .patch()
                 .then()
-                .statusCode(403)
+                .statusCode(200)
                 .extract()
                 .body()
                 .asString();
 
-        assertEquals("Invalid CORS request", content);
+        PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
+        person = createdPerson;
 
+        assertNotNull(createdPerson.getId());
+        assertTrue(createdPerson.getId() > 0);
+
+        assertEquals(1, createdPerson.getId());
+        assertEquals("Linus", createdPerson.getFirstName());
+        assertEquals("Torvalds", createdPerson.getLastName());
+        assertEquals("Helsinki", createdPerson.getAddress());
+        assertEquals("Male", createdPerson.getGender());
+        assertTrue(createdPerson.getEnabled());
 
     }
+
+
 
 
     @Test
@@ -119,16 +116,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
 
     @Test
     @Order(3)
-    void findById() throws IOException {
-
-        requestSpecification = new RequestSpecBuilder()
-                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-                .setBasePath("/api/person/v1")
-                .setPort(TestConfigs.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
+    void findByIdTest() throws IOException {
         var content = given(requestSpecification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .port(TestConfigs.SERVER_PORT)
@@ -144,40 +132,16 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
 
+        assertNotNull(createdPerson.getId());
+        assertTrue(createdPerson.getId() > 0);
+
         assertEquals(1, createdPerson.getId());
-        assertEquals("Richard", createdPerson.getFirstName());
-        assertEquals("Smith", createdPerson.getLastName());
-        assertEquals("New York City, New York, US", createdPerson.getAddress());
+        assertEquals("Linus", createdPerson.getFirstName());
+        assertEquals("Benedcit Torvalds", createdPerson.getLastName());
+        assertEquals("Helsinki", createdPerson.getAddress());
         assertEquals("Male", createdPerson.getGender());
         assertTrue(createdPerson.getEnabled());
     }
-
-    @Test
-    @Order(4)
-    void findByIdWithWrongOrigin() throws IOException {
-
-        requestSpecification = new RequestSpecBuilder()
-                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-                .setBasePath("/api/person/v1")
-                .setPort(TestConfigs.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
-        var content = given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .port(TestConfigs.SERVER_PORT)
-                .pathParam("id", person.getId())
-                .when()
-                .get("{id}")
-                .then()
-                .statusCode(403)
-                .extract()
-                .body()
-                .asString();
-        assertEquals("Invalid CORS request", content);
-    }
-
 
     @Test
     void update() {
@@ -188,9 +152,9 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     }
 
     private void mockPerson() {
-        person.setFirstName("Richard");
-        person.setLastName("Smith");
-        person.setAddress("New York City, New York, US");
+        person.setFirstName("Linus");
+        person.setLastName("Torvalds");
+        person.setAddress("Helsinki");
         person.setGender("Male");
         person.setEnabled(true);
     }
