@@ -3,11 +3,6 @@ package com.frnz7.restSpring.controller;
 import com.frnz7.restSpring.controller.docs.PersonControllerDocs;
 import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.service.PersonServices;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +31,6 @@ public class PersonController implements PersonControllerDocs {
     @GetMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE
     })
-
     @Override
     public PersonDTO findById(@PathVariable Long id) {
         return personServices.findById(id);
@@ -61,6 +55,15 @@ public class PersonController implements PersonControllerDocs {
     public PersonDTO update(@RequestBody PersonDTO person) {
         return personServices.update(person);
     }
+
+    @PatchMapping(value = "/{id}", produces = {
+            MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE
+    })
+    @Override
+    public PersonDTO disablePerson(@PathVariable Long id){
+        return personServices.disablePerson(id);
+    }
+
 
     @DeleteMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE

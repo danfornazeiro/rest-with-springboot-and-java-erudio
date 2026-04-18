@@ -12,6 +12,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.frnz7.restSpring.repository.PersonRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,24 @@ public class PersonServices {
         return dto;
     }
 
+    @Transactional
+    public PersonDTO disablePerson(Long id){
+        logger.info("disabling one person!");
+
+
+
+            personRepository.findById(id).orElseThrow(
+                    () -> new ResoureceNotFoundException("No records found for this id"));
+
+            personRepository.disablePerson(id);
+
+            var entity = personRepository.findById(id).get();
+
+            var dto = parseObject(entity, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+    }
+
     public void delete(Long id){
         logger.info("deleting one person!");
 
@@ -92,6 +111,7 @@ public class PersonServices {
                 () -> new ResoureceNotFoundException("No records found for this id")
         );
         personRepository.delete(entity);
+
     }
 
     private void addHateoasLinks( PersonDTO dto) {
@@ -99,6 +119,7 @@ public class PersonServices {
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
     }
 
 }

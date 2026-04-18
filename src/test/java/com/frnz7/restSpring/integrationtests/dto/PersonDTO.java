@@ -1,34 +1,41 @@
-package com.frnz7.restSpring.model;
+package com.frnz7.restSpring.integrationtests.dto;
 
-import jakarta.persistence.*;
+
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-@Entity
-@Table(name = "person_tb")
-public class Person implements Serializable {
+
+//@JsonPropertyOrder({"id", "first_name", "last_name", "address", "gender" })
+//@JsonFilter("PersonFilter")
+public class PersonDTO implements Serializable {
+
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @Column(name = "first_name", nullable = false, length = 80)
+    //@JsonProperty("first_name")
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 80)
+    //@JsonProperty("last_name")
+    //@JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
-    @Column(nullable = false, length = 100)
+    //@JsonInclude(JsonInclude.Include.NON_EMPTY)
+    //private String phoneNumber;
+    //@JsonFormat(pattern = "dd/MM/yyyy")
+    //private Date birthDay;
     private String address;
-    @Column(nullable = false, length = 6)
+   // @JsonIgnore
+    //@JsonSerialize(using = GenderSerializer.class)
     private String gender;
-    @Column(nullable = false)
+   //private String sensitiveData;
     private Boolean enabled;
 
-    public Person(){}
+    public PersonDTO(){}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -68,7 +75,6 @@ public class Person implements Serializable {
         this.gender = gender;
     }
 
-
     public Boolean getEnabled() {
         return enabled;
     }
@@ -80,8 +86,8 @@ public class Person implements Serializable {
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
-        Person person = (Person) object;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(gender, person.gender) && Objects.equals(enabled, person.enabled);
+        PersonDTO personDTO = (PersonDTO) object;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender) && Objects.equals(enabled, personDTO.enabled);
     }
 
     @Override
