@@ -1,21 +1,27 @@
-package com.frnz7.restSpring.integrationtests.controller.withjson;
+package com.frnz7.restSpring.integrationtests.controller.withyaml;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 
 import com.frnz7.restSpring.config.TestConfigs;
+import com.frnz7.restSpring.integrationtests.controller.withyaml.mapper.YAMLMapper;
 import com.frnz7.restSpring.integrationtests.dto.PersonDTO;
 import com.frnz7.restSpring.integrationtests.testcontainers.AbstractIntegrationTest;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.EncoderConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -24,17 +30,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PersonControllerJSONTest extends AbstractIntegrationTest {
+class PersonControllerYAMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification requestSpecification;
-    private static ObjectMapper objectMapper;
+    private static YAMLMapper objectMapper;
     private static PersonDTO person;
 
     @BeforeAll
     static void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
+        objectMapper = new YAMLMapper();
         person = new PersonDTO();
     }
     @Order(1)
@@ -49,20 +53,24 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
                 .build();
 
-        var content = given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        var createdPerson = given((RequestSpecification) RestAssuredConfig.config()
+                .encoderConfig(
+                        EncoderConfig.encoderConfig().
+                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT)))
+        .spec(requestSpecification)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
-                .body(person)
+                .body(person, objectMapper)
                 .when()
                 .post()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                .asString();
+                .as(PersonDTO.class, objectMapper);
 
-        PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
 
         assertNotNull(createdPerson.getId());
@@ -81,20 +89,24 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     void updateTest() throws IOException {
         person.setLastName("Benedcit Torvalds");
 
-        var content = given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        var createdPerson = given((RequestSpecification) RestAssuredConfig.config()
+                .encoderConfig(
+                        EncoderConfig.encoderConfig().
+                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT)))
+                .spec(requestSpecification)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
-                .body(person)
+                .body(person, objectMapper)
                 .when()
                 .patch()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                .asString();
+                  .as(PersonDTO.class, objectMapper);
 
-        PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
 
         assertNotNull(createdPerson.getId());
@@ -112,21 +124,25 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     @Test
     @Order(3)
     void findByIdTest() throws IOException {
-        var content = given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        var createdPerson = given((RequestSpecification) RestAssuredConfig.config()
+                .encoderConfig(
+                        EncoderConfig.encoderConfig().
+                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT)))
+                .spec(requestSpecification)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
                 .get("{id}")
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
 
                 .extract()
                 .body()
-                .asString();
+                  .as(PersonDTO.class, objectMapper);
 
-        PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
+        ;
         person = createdPerson;
 
         assertNotNull(createdPerson.getId());
@@ -144,21 +160,23 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     @Test
     @Order(4)
     void disableTest() throws IOException {
-        var content = given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        var createdPerson = given((RequestSpecification) RestAssuredConfig.config()
+                .encoderConfig(
+                        EncoderConfig.encoderConfig().
+                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT)))
+                .spec(requestSpecification)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
                 .patch("{id}")
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                .asString();
+                  .as(PersonDTO.class, objectMapper);
 
-        PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
 
         assertNotNull(createdPerson.getId());
@@ -177,8 +195,6 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     @Order(5)
     void deleteTest() throws IOException {
         given(requestSpecification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
                 .delete("{id}")
@@ -190,20 +206,20 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     @Test
     @Order(6)
     void findAllTest() throws IOException {
-        var content = given(requestSpecification)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+        var response = given(requestSpecification)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                .asString();
+                  .as(PersonDTO[].class, objectMapper);
 
-        List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>(){});
+        List<PersonDTO> people = Arrays.asList(response);
 
 
         PersonDTO personEight = people.get(7);

@@ -1,6 +1,7 @@
 package com.frnz7.restSpring.integrationtests.dto;
 
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
@@ -9,6 +10,8 @@ import java.util.Objects;
 
 //@JsonPropertyOrder({"id", "first_name", "last_name", "address", "gender" })
 //@JsonFilter("PersonFilter")
+
+@XmlRootElement
 public class PersonDTO implements Serializable {
 
 
