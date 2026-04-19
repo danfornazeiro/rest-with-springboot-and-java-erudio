@@ -4,6 +4,13 @@ import com.frnz7.restSpring.controller.docs.PersonControllerDocs;
 import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.service.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +31,16 @@ public class PersonController implements PersonControllerDocs {
             {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE}
     )
     @Override
-    public List<PersonDTO> findAll() {
-        return personServices.findAll();
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    )
+    {
+
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+        return ResponseEntity.ok(personServices.findAll(pageable));
     }
 
     @GetMapping(value = "/{id}", produces = {

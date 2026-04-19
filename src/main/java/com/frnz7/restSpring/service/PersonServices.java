@@ -15,24 +15,41 @@ import com.frnz7.restSpring.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class PersonServices {
 
     private final Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
+    @Autowired
+    private PersonRepository personRepository;
+    @Autowired
+    private PagedResourcesAssembler<PersonDTO> assembler;
 
-    private final PersonRepository personRepository;
-    public PersonServices(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
-    public List<PersonDTO> findAll(){
+    public PagedModel<EntityModel<PersonDTO>> findAll(Pageable pageable){
         logger.info("Finding all people!");
-       var people = parseListObjects(personRepository.findAll(), PersonDTO.class);
-       people.forEach(this::addHateoasLinks);
-       return people;
+
+        var people = personRepository.findAll(pageable);
+        var peopleWithLinks = people.map(p -> {
+            var dto = parseObject(p, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+        Link findAllLink = WebMvcLinkBuilder.linkTo
+                (WebMvcLinkBuilder.methodOn(PersonController.class)
+                        .findAll(pageable.getPageNumber(), pageable.getPageSize(),
+                                String.valueOf(pageable.getSort())))
+                .withSelfRel();
+
+        return assembler.toModel(peopleWithLinks, findAllLink);
     }
 
 
@@ -116,7 +133,8 @@ public class PersonServices {
 
     private void addHateoasLinks( PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(1,12, "asc")).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));

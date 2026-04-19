@@ -86,7 +86,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
                 .port(TestConfigs.SERVER_PORT)
                 .body(person)
                 .when()
-                .patch()
+                .patch("{id}", person.getId())
                 .then()
                 .statusCode(200)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +102,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
 
         assertEquals(1, createdPerson.getId());
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Torvalds", createdPerson.getLastName());
+        assertEquals("Benedcit Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki", createdPerson.getAddress());
         assertEquals("Male", createdPerson.getGender());
         assertTrue(createdPerson.getEnabled());
@@ -134,7 +134,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
 
         assertEquals(1, createdPerson.getId());
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Benedcit Torvalds", createdPerson.getLastName());
+        assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki", createdPerson.getAddress());
         assertEquals("Male", createdPerson.getGender());
         assertTrue(createdPerson.getEnabled());

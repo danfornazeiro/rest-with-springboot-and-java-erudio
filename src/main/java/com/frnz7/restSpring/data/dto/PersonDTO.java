@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.frnz7.restSpring.serializer.GenderSerializer;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 
 import java.io.Serial;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 //@JsonPropertyOrder({"id", "first_name", "last_name", "address", "gender" })
 //@JsonFilter("PersonFilter")
+@Relation(collectionRelation = "people" )
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
 
 
