@@ -1,12 +1,14 @@
 package com.frnz7.restSpring.data.dto;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Relation(collectionRelation = "books")
 public class BookDTO extends RepresentationModel<BookDTO> implements Serializable {
 
     @Serial
