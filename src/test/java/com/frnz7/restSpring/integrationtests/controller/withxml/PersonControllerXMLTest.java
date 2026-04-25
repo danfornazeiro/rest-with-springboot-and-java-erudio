@@ -3,6 +3,7 @@ package com.frnz7.restSpring.integrationtests.controller.withxml;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.frnz7.restSpring.config.TestConfigs;
 import com.frnz7.restSpring.integrationtests.dto.PersonDTO;
+import com.frnz7.restSpring.integrationtests.dto.wrappers.xml.PagedModelPerson;
 import com.frnz7.restSpring.integrationtests.testcontainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -54,6 +55,7 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
                 .accept(MediaType.APPLICATION_XML_VALUE)
                 .port(TestConfigs.SERVER_PORT)
                 .body(person)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
                 .when()
                 .post()
                 .then()
@@ -202,7 +204,8 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>(){});
+        PagedModelPerson wrapper = objectMapper.readValue(content, PagedModelPerson.class);
+        List<PersonDTO> people = wrapper.getContent();
 
 
         PersonDTO personEight = people.get(7);

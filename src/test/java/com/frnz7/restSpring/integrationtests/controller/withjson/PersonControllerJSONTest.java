@@ -2,7 +2,7 @@ package com.frnz7.restSpring.integrationtests.controller.withjson;
 
 import com.frnz7.restSpring.config.TestConfigs;
 import com.frnz7.restSpring.integrationtests.dto.PersonDTO;
-import com.frnz7.restSpring.integrationtests.dto.wrappers.WrapperPersonDTO;
+import com.frnz7.restSpring.integrationtests.dto.wrappers.json.WrapperPersonDTO;
 import com.frnz7.restSpring.integrationtests.testcontainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -12,7 +12,6 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -193,6 +192,7 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     void findAllTest() throws IOException {
         var content = given(requestSpecification)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
                 .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
@@ -214,13 +214,13 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
         assertTrue(personEight.getId() > 0);
 
         assertEquals(1, personEight.getId());
-        assertEquals("Ada", personEight.getFirstName());
-        assertEquals("Lovelace", personEight.getLastName());
-        assertEquals("London - England", personEight.getAddress());
-        assertEquals("Male", personEight.getGender());
+        assertEquals("Allegra", personEight.getFirstName());
+        assertEquals("Dome", personEight.getLastName());
+        assertEquals("57 Roxbury Pass", personEight.getAddress());
+        assertEquals("Female", personEight.getGender());
         assertTrue(personEight.getEnabled());
 
-        PersonDTO personNine = people.get(7);
+        PersonDTO personNine = people.get(8);
         person = personNine;
 
         assertNotNull(personNine.getId());

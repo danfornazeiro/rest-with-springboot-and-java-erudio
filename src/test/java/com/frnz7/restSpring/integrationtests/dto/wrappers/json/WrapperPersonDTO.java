@@ -1,4 +1,4 @@
-package com.frnz7.restSpring.integrationtests.dto.wrappers;
+package com.frnz7.restSpring.integrationtests.dto.wrappers.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

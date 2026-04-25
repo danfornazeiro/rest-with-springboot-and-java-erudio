@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.frnz7.restSpring.config.TestConfigs;
 import com.frnz7.restSpring.integrationtests.controller.withyaml.mapper.YAMLMapper;
 import com.frnz7.restSpring.integrationtests.dto.PersonDTO;
+import com.frnz7.restSpring.integrationtests.dto.wrappers.xml.PagedModelPerson;
 import com.frnz7.restSpring.integrationtests.testcontainers.AbstractIntegrationTest;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -211,15 +212,16 @@ class PersonControllerYAMLTest extends AbstractIntegrationTest {
                 .port(TestConfigs.SERVER_PORT)
                 .pathParam("id", person.getId())
                 .when()
+                .queryParams("page", 3, "size", 12, "direction", "asc")
                 .get()
                 .then()
                 .statusCode(200)
                 .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                  .as(PersonDTO[].class, objectMapper);
+                  .as(PagedModelPerson.class, objectMapper);
 
-        List<PersonDTO> people = Arrays.asList(response);
+        List<PersonDTO> people = response.getContent();
 
 
         PersonDTO personEight = people.get(7);
