@@ -2,6 +2,7 @@ package com.frnz7.restSpring.integrationtests.controller.withjson;
 
 import com.frnz7.restSpring.config.TestConfigs;
 import com.frnz7.restSpring.integrationtests.dto.PersonDTO;
+import com.frnz7.restSpring.integrationtests.dto.wrappers.WrapperPersonDTO;
 import com.frnz7.restSpring.integrationtests.testcontainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -203,8 +204,8 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>(){});
-
+        WrapperPersonDTO wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+        List<PersonDTO> people = wrapper.getEmbedded().getPeople();
 
         PersonDTO personEight = people.get(7);
         person = personEight;
