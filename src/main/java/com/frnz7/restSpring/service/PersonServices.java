@@ -2,8 +2,8 @@ package com.frnz7.restSpring.service;
 
 import com.frnz7.restSpring.controller.PersonController;
 import com.frnz7.restSpring.data.dto.PersonDTO;
-import com.frnz7.restSpring.exception.ResoureceNotFoundException;
-import static com.frnz7.restSpring.mapper.ObjectMapper.parseListObjects;
+import com.frnz7.restSpring.exception.FileStorageException;
+
 import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
 
 import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
@@ -74,7 +74,7 @@ public class PersonServices {
     public PersonDTO findById(Long id){
         logger.info("Finding one person!");
        var entity = personRepository.findById(id).orElseThrow(
-               () -> new ResoureceNotFoundException("No records found for this id")
+               () -> new FileStorageException("No records found for this id")
        );
         var dto = parseObject(entity, PersonDTO.class);
         addHateoasLinks(dto);
@@ -107,7 +107,7 @@ public class PersonServices {
 
         logger.info("updating one person!");
         Person entity = personRepository.findById(person.getId()).orElseThrow(
-                () -> new ResoureceNotFoundException("No records found for this id")
+                () -> new FileStorageException("No records found for this id")
         );
 
         entity.setFirstName(person.getFirstName());
@@ -128,7 +128,7 @@ public class PersonServices {
 
 
             personRepository.findById(id).orElseThrow(
-                    () -> new ResoureceNotFoundException("No records found for this id"));
+                    () -> new FileStorageException("No records found for this id"));
 
             personRepository.disablePerson(id);
 
@@ -143,7 +143,7 @@ public class PersonServices {
         logger.info("deleting one person!");
 
         Person entity = personRepository.findById(id).orElseThrow(
-                () -> new ResoureceNotFoundException("No records found for this id")
+                () -> new FileStorageException("No records found for this id")
         );
         personRepository.delete(entity);
 

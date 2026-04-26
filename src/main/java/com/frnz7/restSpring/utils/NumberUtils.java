@@ -1,12 +1,12 @@
 package com.frnz7.restSpring.utils;
 
-import com.frnz7.restSpring.exception.UnsupportedMathOperationException;
+import com.frnz7.restSpring.exception.FileNotFoundException;
 
 public class NumberUtils {
 
     public static double convertNumberToDouble(String strNumber){
         if(strNumber == null || strNumber.isEmpty()){
-            throw new UnsupportedMathOperationException("Please set a numeric value");
+            throw new FileNotFoundException("Please set a numeric value");
         }
         String number = strNumber.replace(",", ".");
         return Double.parseDouble(number);

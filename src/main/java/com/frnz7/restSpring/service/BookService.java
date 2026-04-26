@@ -7,7 +7,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
-import com.frnz7.restSpring.exception.ResoureceNotFoundException;
+import com.frnz7.restSpring.exception.FileStorageException;
 import com.frnz7.restSpring.model.Books;
 import com.frnz7.restSpring.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class BookService {
 
     public BookDTO findById(Long id){
         var entity = bookRepository.findById(id).orElseThrow(
-                () -> new ResoureceNotFoundException("No records found for this id")
+                () -> new FileStorageException("No records found for this id")
         );
 
         var dto = parseObject(entity, BookDTO.class);
@@ -70,7 +70,7 @@ public class BookService {
         if(bookDTO == null) throw new RequiredObjectIsNullException();
 
         Books entity = bookRepository.findById(bookDTO.getId()).orElseThrow(
-                () -> new ResoureceNotFoundException("No records found for this id")
+                () -> new FileStorageException("No records found for this id")
         );
 
         entity.setAuthor(bookDTO.getAuthor());
@@ -87,7 +87,7 @@ public class BookService {
 
      public void delete(Long id){
          Books entity =  bookRepository.findById(id).orElseThrow(
-                () -> new ResoureceNotFoundException("No records found for this id")
+                () -> new FileStorageException("No records found for this id")
         );
         bookRepository.delete(entity);
      }

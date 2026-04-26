@@ -2,8 +2,8 @@ package com.frnz7.restSpring.exception.handler;
 
 import com.frnz7.restSpring.exception.ExceptionResponse;
 import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
-import com.frnz7.restSpring.exception.ResoureceNotFoundException;
-import com.frnz7.restSpring.exception.UnsupportedMathOperationException;
+import com.frnz7.restSpring.exception.FileStorageException;
+import com.frnz7.restSpring.exception.FileNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,26 +23,21 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
-    //"formata" em json todas as bad request
-    @ExceptionHandler(UnsupportedMathOperationException.class)
-   public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
-        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-   }
-
-   //"formata" em json todas as not found
-   @ExceptionHandler(ResoureceNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundExceptions(Exception ex, WebRequest request){
+    @ExceptionHandler(FileNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileNotFoundExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-   }
+    }
 
-   @ExceptionHandler(RequiredObjectIsNullException.class)
-    public final ResponseEntity<ExceptionResponse> handleRequiredObjectIsNullException(Exception ex, WebRequest request){
+    @ExceptionHandler(FileStorageException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileStorageExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
-        return  new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-   }
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 
 }
