@@ -1,7 +1,7 @@
 package com.frnz7.restSpring.exception.handler;
 
+import com.frnz7.restSpring.exception.BadRequestException;
 import com.frnz7.restSpring.exception.ExceptionResponse;
-import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
 import com.frnz7.restSpring.exception.FileStorageException;
 import com.frnz7.restSpring.exception.FileNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -37,6 +37,13 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handleRequiredObjectExceptions(Exception ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 
 
 

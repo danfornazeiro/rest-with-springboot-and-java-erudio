@@ -6,7 +6,7 @@ import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import com.frnz7.restSpring.exception.RequiredObjectIsNullException;
+import com.frnz7.restSpring.exception.BadRequestException;
 import com.frnz7.restSpring.exception.FileStorageException;
 import com.frnz7.restSpring.model.Books;
 import com.frnz7.restSpring.repository.BookRepository;
@@ -56,7 +56,7 @@ public class BookService {
     }
 
     public BookDTO create(BookDTO bookDTO){
-        if(bookDTO == null) throw new RequiredObjectIsNullException();
+        if(bookDTO == null) throw new BadRequestException();
 
         var entity = parseObject(bookDTO, Books.class);
 
@@ -67,7 +67,7 @@ public class BookService {
     }
 
     public BookDTO update(BookDTO bookDTO){
-        if(bookDTO == null) throw new RequiredObjectIsNullException();
+        if(bookDTO == null) throw new BadRequestException();
 
         Books entity = bookRepository.findById(bookDTO.getId()).orElseThrow(
                 () -> new FileStorageException("No records found for this id")
