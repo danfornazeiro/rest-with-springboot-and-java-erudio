@@ -235,6 +235,52 @@ class PersonControllerJSONTest extends AbstractIntegrationTest {
     }
 
 
+    @Test
+    @Order(7)
+    void findByName() throws IOException {
+        var content = given(requestSpecification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
+                .port(TestConfigs.SERVER_PORT)
+                .pathParam("firstName", "and")
+                .when()
+                .get("findPeopleByName/{firstName}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        WrapperPersonDTO wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+        List<PersonDTO> people = wrapper.getEmbedded().getPeople();
+
+        PersonDTO personEight = people.get(7);
+        person = personEight;
+
+        assertNotNull(personEight.getId());
+        assertTrue(personEight.getId() > 0);
+        //tem q mudar as assertions
+        assertEquals(1, personEight.getId());
+        assertEquals("Allegra", personEight.getFirstName());
+        assertEquals("Dome", personEight.getLastName());
+        assertEquals("57 Roxbury Pass", personEight.getAddress());
+        assertEquals("Female", personEight.getGender());
+        assertTrue(personEight.getEnabled());
+
+        PersonDTO personNine = people.get(8);
+        person = personNine;
+
+        assertNotNull(personNine.getId());
+        assertTrue(personNine.getId() > 0);
+
+        assertEquals(1, personNine.getId());
+        assertEquals("Felipe", personNine.getFirstName());
+        assertEquals("A", personNine.getLastName());
+        assertEquals("SP", personNine.getAddress());
+        assertEquals("Male", personNine.getGender());
+        assertTrue(personNine.getEnabled());
+    }
 
     private void mockPerson() {
         person.setFirstName("Linus");
