@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ public interface FileControllerDocs {
     @Operation(summary = "Upload file", description = "Upload file", tags = {"File"},
             responses = {
                     @ApiResponse(description = "Success",
-                            responseCode = "200",
+                            responseCode = "201",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(
                                             schema = @Schema(implementation = UploadFileResponseDTO.class)))
@@ -38,7 +39,7 @@ public interface FileControllerDocs {
     @Operation(summary = "Upload multiple files", description = "Upload multiple files", tags = {"File"},
             responses = {
                     @ApiResponse(description = "Success",
-                            responseCode = "200",
+                            responseCode = "201",
                             content = {
                                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(
                                             schema = @Schema(implementation = UploadFileResponseDTO.class)))
@@ -50,7 +51,7 @@ public interface FileControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    List<UploadFileResponseDTO> uploadMultipleFile(MultipartFile file);
+    List<UploadFileResponseDTO> uploadMultipleFile(MultipartFile[] files);
 
     @Operation(summary = "Download file", description = "Download file", tags = {"File"},
             responses = {
@@ -67,6 +68,6 @@ public interface FileControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    ResponseEntity<ResponseEntity> downloadFile(String fileName, HttpServletRequest request);
+    ResponseEntity<Resource> downloadFile(String fileName, HttpServletRequest request);
 
 }
