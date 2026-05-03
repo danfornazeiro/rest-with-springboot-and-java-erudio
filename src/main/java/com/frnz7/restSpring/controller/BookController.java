@@ -2,6 +2,7 @@ package com.frnz7.restSpring.controller;
 
 import com.frnz7.restSpring.controller.docs.BookControllerDocs;
 import com.frnz7.restSpring.data.dto.BookDTO;
+import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,9 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/book/v1")
@@ -36,6 +40,7 @@ public class BookController implements BookControllerDocs {
         return ResponseEntity.ok(bookService.findAll(pageable));
     }
 
+
     @GetMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
 
     @Override
@@ -49,6 +54,9 @@ public class BookController implements BookControllerDocs {
     public BookDTO create(@RequestBody BookDTO bookDTO){
         return bookService.create(bookDTO);
     }
+
+
+
 
     @PutMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
