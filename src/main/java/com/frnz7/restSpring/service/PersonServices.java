@@ -7,7 +7,6 @@ import com.frnz7.restSpring.exception.FileStorageException;
 import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
 
 import com.frnz7.restSpring.exception.BadRequestException;
-import com.frnz7.restSpring.file.exporter.MediaTypes;
 import com.frnz7.restSpring.file.exporter.contract.FileExporter;
 import com.frnz7.restSpring.file.exporter.factory.FileExporterFactory;
 import com.frnz7.restSpring.file.importer.contract.FileImporter;
@@ -86,7 +85,7 @@ public class PersonServices {
             FileExporter exporter = this.exporter.getExporter(acceptHeader);
             return exporter.exportFile(people);
         } catch (Exception e) {
-            throw new RuntimeException("Error during file export!",e);
+            throw new RuntimeException("Error during file export!", e);
         }
     }
 

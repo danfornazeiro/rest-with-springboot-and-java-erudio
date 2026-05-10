@@ -1,24 +1,20 @@
 package com.frnz7.restSpring.data.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.frnz7.restSpring.serializer.GenderSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.frnz7.restSpring.model.Books;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 //@JsonPropertyOrder({"id", "first_name", "last_name", "address", "gender" })
 //@JsonFilter("PersonFilter")
 @Relation(collectionRelation = "people" )
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
-
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,6 +36,10 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     private String gender;
    //private String sensitiveData;
     private Boolean enabled;
+    private String profileUrl;
+    private String photoUrl;
+    @JsonIgnore
+    private List<Books> books;
 
     public PersonDTO(){}
 
@@ -91,16 +91,46 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
         this.enabled = enabled;
     }
 
+    @JsonIgnore
+    public String getName(){
+        return (firstName != null) ? firstName : "" +
+                (lastName != null ? " " + lastName : "");
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public List<Books> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Books> books) {
+        this.books = books;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
         PersonDTO personDTO = (PersonDTO) object;
-        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender) && Objects.equals(enabled, personDTO.enabled);
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender) && Objects.equals(enabled, personDTO.enabled) && Objects.equals(profileUrl, personDTO.profileUrl) && Objects.equals(photoUrl, personDTO.photoUrl) && Objects.equals(books, personDTO.books);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, address, gender, enabled);
+        return Objects.hash(super.hashCode(), id, firstName, lastName, address, gender, enabled, profileUrl, photoUrl, books);
     }
 }
