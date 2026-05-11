@@ -102,6 +102,20 @@ public class PersonController implements PersonControllerDocs {
         return ResponseEntity.ok(personServices.findByName(firstName, pageable));
     }
 
+    @GetMapping(value = "/export/{id}",
+    produces = {MediaType.APPLICATION_PDF_VALUE}
+    )
+    @Override
+    public ResponseEntity<Resource> export(@PathVariable Long id, HttpServletRequest request) throws Exception {
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+
+        Resource file = personServices.exportPerson(id, acceptHeader);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(acceptHeader))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=person.pdf")
+                .body(file);
+    }
+
     @GetMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE
     })

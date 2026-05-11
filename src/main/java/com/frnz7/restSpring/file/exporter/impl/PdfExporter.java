@@ -2,36 +2,79 @@ package com.frnz7.restSpring.file.exporter.impl;
 
 import com.frnz7.restSpring.data.dto.PersonDTO;
 import com.frnz7.restSpring.file.exporter.contract.FileExporter;
+import com.frnz7.restSpring.service.QrCodeService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class PdfExporter implements FileExporter {
+
+    private final QrCodeService qrCodeService;
+
+    public PdfExporter(QrCodeService qrCodeService) {
+        this.qrCodeService = qrCodeService;
+    }
+
     @Override
     public Resource exportFile(List<PersonDTO> people) throws Exception {
         InputStream inputStream = getClass().getResourceAsStream("/templates/people.jrxml");
-        if(inputStream == null ) {
-            throw new RuntimeException("Template file not found: /resources/templates/people.jrxml");
+        if (inputStream == null) {
+            throw new RuntimeException("Template file not found: /templates/people.jrxml");
         }
 
         JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
         Map<String, Object> parameters = new HashMap<>();
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(people);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,dataSource);
-        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             return new ByteArrayResource(outputStream.toByteArray());
+        }
+    }
 
+    @Override
+    public Resource exportPerson(PersonDTO person) throws Exception {
+        InputStream mainTemplateStream = getClass().getResourceAsStream("/templates/person.jrxml");
+        if (mainTemplateStream == null) {
+            throw new RuntimeException("Template file not found: /templates/person.jrxml");
+        }
+
+        InputStream subReportStream = getClass().getResourceAsStream("/templates/books.jasper");
+        if (subReportStream == null) {
+            throw new RuntimeException("Template file not found: /templates/books.jasper");
+        }
+
+        JasperReport mainReport = JasperCompileManager.compileReport(mainTemplateStream);
+        JasperReport subReport = (JasperReport) JRLoader.loadObject(subReportStream);
+
+        InputStream qrCodeStream = qrCodeService.generateQRCode(person.getProfileUrl(), 200, 200);
+
+        JRBeanCollectionDataSource subDataSource = new JRBeanCollectionDataSource(person.getBooks());
+        JRBeanCollectionDataSource mainDataSource = new JRBeanCollectionDataSource(Collections.singletonList(person));
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("SUB_REPORT_DATA_SOURCE", subDataSource);
+        parameters.put("BOOK_SUB_REPORT", subReport);
+        parameters.put("QR_CODEIMAGE", qrCodeStream);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, mainDataSource);
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+            return new ByteArrayResource(outputStream.toByteArray());
         }
     }
 }

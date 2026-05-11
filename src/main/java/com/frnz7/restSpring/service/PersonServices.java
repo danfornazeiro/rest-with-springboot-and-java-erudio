@@ -65,6 +65,20 @@ public class PersonServices {
     }
 
 
+    public Resource exportPerson(Long id, String acceptHeader) {
+        logger.info("Exporting data of one person!");
+        var person = personRepository.findById(id)
+                .map(entity ->  parseObject(entity, PersonDTO.class))
+                .orElseThrow(() -> new FileStorageException("No records found for this id"));
+        try{
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPerson(person);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during file export!",e);
+        }
+
+    }
+
     public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
         var entity = personRepository.findById(id).orElseThrow(
@@ -74,6 +88,7 @@ public class PersonServices {
         addHateoasLinks(dto);
         return dto;
     }
+
 
     public Resource exportPage(Pageable pageable, String acceptHeader) {
         logger.info("Exporting a people page!");

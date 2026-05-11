@@ -69,7 +69,7 @@ public interface PersonControllerDocs {
                     @ApiResponse(description = "Success",
                             responseCode = "200",
                             content = {
-                                    @Content (schema = @Schema(implementation = PersonDTO.class))
+                                    @Content(schema = @Schema(implementation = PersonDTO.class))
                             }),
                     @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
@@ -102,6 +102,21 @@ public interface PersonControllerDocs {
             @RequestParam(value = "size", defaultValue = "12") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction
     );
+
+    @Operation(summary = "Export person date as PDF", description = "Export a specific person date as PDF by id", tags = {"People"},
+            responses = {
+                    @ApiResponse(description = "Success",
+                            responseCode = "200",
+                            content = @Content(mediaType = MediaTypes.APPLICATION_PDF_VALUE)),
+
+                    @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "403", content = @Content),
+                    @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    ResponseEntity<Resource> export(@PathVariable Long id, HttpServletRequest request) throws Exception;
 
 
     @Operation(summary = "Find a specific person by id", description = "Find person by id", tags = {"People"},
@@ -140,7 +155,7 @@ public interface PersonControllerDocs {
                             responseCode = "201",
                             content = @Content(schema = @Schema(implementation = PersonDTO.class))),
                     @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
-                    @ApiResponse(description ="Unauthorized", responseCode = "403", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "403", content = @Content),
                     @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
@@ -153,7 +168,7 @@ public interface PersonControllerDocs {
                             responseCode = "200",
                             content = @Content(schema = @Schema(implementation = PersonDTO.class))),
                     @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
-                    @ApiResponse(description ="Unauthorized", responseCode = "403", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "403", content = @Content),
                     @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
