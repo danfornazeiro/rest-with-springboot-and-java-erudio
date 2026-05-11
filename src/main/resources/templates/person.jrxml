@@ -6,6 +6,7 @@
 	<parameter name="SUB_REPORT_DATA_SOURCE" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="QR_CODEIMAGE" class="java.io.InputStream"/>
 	<parameter name="BOOK_SUB_REPORT" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SUB_REPORT_DIR" class="java.lang.String"/>
 	<query language="SQL"><![CDATA[SELECT id, CONCAT(first_name, ' ', last_name) AS name, address, gender, enabled, wikipedia_profile_url AS profileUrl, photo_url AS photoUrl
 FROM person_tb WHERE id = $P{PERSON_ID}]]></query>
 	<field name="id" class="java.lang.Long"/>
@@ -54,7 +55,7 @@ FROM person_tb WHERE id = $P{PERSON_ID}]]></query>
 		<band height="80" splitType="Stretch">
 			<element kind="subreport" uuid="2b8bc6ff-5a36-4038-8165-433d436381f1" x="0" y="10" width="555" height="60">
 				<dataSourceExpression><![CDATA[$P{SUB_REPORT_DATA_SOURCE}]]></dataSourceExpression>
-				<expression><![CDATA[$P{BOOK_SUB_REPORT}]]></expression>
+				<expression><![CDATA[$P{SUB_REPORT_DIR}]]></expression>
 				<parameter name="PERSON_ID">
 					<expression><![CDATA[$F{id}]]></expression>
 				</parameter>

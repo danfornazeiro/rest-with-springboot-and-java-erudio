@@ -90,7 +90,7 @@ class BookServiceTest {
         assertEquals("author Test1", book1.getAuthor());
         assertEquals(11.00, book1.getPrice());
         assertEquals("title Test1", book1.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book1.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book1.getLaunchDate());
 
         var book4 = books.get(4);
 
@@ -131,7 +131,7 @@ class BookServiceTest {
         assertEquals("author Test4", book4.getAuthor());
         assertEquals(14.00, book4.getPrice());
         assertEquals("title Test4", book4.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book4.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book4.getLaunchDate());
 
         var book7 = books.get(7);
 
@@ -172,7 +172,7 @@ class BookServiceTest {
         assertEquals("author Test7", book7.getAuthor());
         assertEquals(17.00, book7.getPrice());
         assertEquals("title Test7", book7.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book7.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), book7.getLaunchDate());
 
     }
 
@@ -222,7 +222,7 @@ class BookServiceTest {
         assertEquals("author Test1", result.getAuthor());
         assertEquals(Double.valueOf(11.00), result.getPrice());
         assertEquals("title Test1", result.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunchDate());
 
     }
 
@@ -275,7 +275,7 @@ class BookServiceTest {
         assertEquals("author Test1", result.getAuthor());
         assertEquals(Double.valueOf(11.00), result.getPrice());
         assertEquals("title Test1", result.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunchDate());
 
 
     }
@@ -331,7 +331,7 @@ class BookServiceTest {
         assertEquals("author Test1", result.getAuthor());
         assertEquals(Double.valueOf(11.00), result.getPrice());
         assertEquals("title Test1", result.getTitle());
-        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunch_date());
+        assertEquals(Timestamp.valueOf("2026-03-21 23:11:55.443"), result.getLaunchDate());
     }
 
     @Test

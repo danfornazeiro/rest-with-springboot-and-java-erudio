@@ -16,7 +16,7 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
 
     private Long id;
     private String author;
-    private Timestamp launch_date;
+    private Timestamp launchDate;
     private Double price;
     private String title;
 
@@ -25,12 +25,12 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
         BookDTO bookDTO = (BookDTO) object;
-        return Objects.equals(id, bookDTO.id) && Objects.equals(author, bookDTO.author) && Objects.equals(launch_date, bookDTO.launch_date) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
+        return Objects.equals(id, bookDTO.id) && Objects.equals(author, bookDTO.author) && Objects.equals(launchDate, bookDTO.launchDate) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, author, launch_date, price, title);
+        return Objects.hash(super.hashCode(), id, author, launchDate, price, title);
     }
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
         this.author = author;
     }
 
-    public Timestamp getLaunch_date() {
-        return launch_date;
+    public Timestamp getLaunchDate() {
+        return launchDate;
     }
 
-    public void setLaunch_date(Timestamp launch_date) {
-        this.launch_date = launch_date;
+    public void setLaunchDate(Timestamp launchDate) {
+        this.launchDate = launchDate;
     }
 
     public Double getPrice() {

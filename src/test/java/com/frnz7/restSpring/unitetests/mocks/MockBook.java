@@ -39,7 +39,7 @@ public class MockBook {
         books.setPrice(10.00 + number);
         books.setTitle("title Test" + number);
         books.setId(Long.valueOf(number));
-        books.setLaunch_date(Timestamp.valueOf("2026-03-21 23:11:55.443"));
+        books.setLaunchDate(Timestamp.valueOf("2026-03-21 23:11:55.443"));
         return books;
     }
 
@@ -49,7 +49,7 @@ public class MockBook {
         books.setPrice(10.00 + number);
         books.setTitle("title Test" + number);
         books.setId(number.longValue());
-        books.setLaunch_date(Timestamp.valueOf("2026-03-21 23:11:55.443"));
+        books.setLaunchDate(Timestamp.valueOf("2026-03-21 23:11:55.443"));
         return books;
     }
 

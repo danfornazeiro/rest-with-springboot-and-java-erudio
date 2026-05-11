@@ -19,6 +19,8 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class BookService {
     @Autowired
@@ -74,7 +76,7 @@ public class BookService {
         );
 
         entity.setAuthor(bookDTO.getAuthor());
-        entity.setLaunch_date(bookDTO.getLaunch_date());
+        entity.setLaunchDate(bookDTO.getLaunchDate());
         entity.setPrice(bookDTO.getPrice());
         entity.setTitle(bookDTO.getTitle());
 

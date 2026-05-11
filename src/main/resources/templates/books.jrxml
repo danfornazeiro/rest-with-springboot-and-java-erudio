@@ -7,11 +7,8 @@
 			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
 		</conditionalStyle>
 	</style>
-	<parameter name="PERSON_ID" class="java.lang.Long"/>
-	<query language="SQL"><![CDATA[SELECT b.id, b.author, b.launch_date AS launchDate, b.price, b.title 
-    FROM books b 
-    JOIN person_books pb ON pb.book_id = b.id 
-    WHERE pb.person_id = $P{PERSON_ID}]]></query>
+	<parameter name="SUB_REPORT_DATA_SOURCE" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="PERSON_ID" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="author" class="java.lang.String"/>
 	<field name="launchDate" class="java.util.Date"/>

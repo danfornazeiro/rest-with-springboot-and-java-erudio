@@ -26,6 +26,7 @@ spring:
 logging:
   level:
     com.frnz7.restSpring: DEBUG
+    net.sf.jasperreports.engine.*: TRACE
 
 springdoc:
   paths-to-match: /api/**/v1/**
