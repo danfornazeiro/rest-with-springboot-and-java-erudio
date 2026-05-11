@@ -1,0 +1,57 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="person" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3fc76afb-e259-4c96-b454-be3a8a8e3e5d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="cGVyc29uX3RiIEFTICwxMiwxOCw2NjAyNzFlNy04MjZlLTQ5NzItYjU3Ni02ODdmNDk1MmNmZDk7"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<query language="SQL"><![CDATA[SELECT id,
+	CONCAT(first_name, ' ', last_name) AS name,
+	address,
+	gender,
+	enabled,
+	wikipedia_profile_url AS profileUrl,
+	photo_url AS photoUrl
+FROM person_tb]]></query>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gender"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<field name="enabled" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="enabled"/>
+		<property name="com.jaspersoft.studio.field.label" value="enabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<field name="profileurl" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="profileurl"/>
+		<property name="com.jaspersoft.studio.field.label" value="profileurl"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<field name="photourl" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="photourl"/>
+		<property name="com.jaspersoft.studio.field.label" value="photourl"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="person_tb"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch"/>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="61" splitType="Stretch"/>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>
