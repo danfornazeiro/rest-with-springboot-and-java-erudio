@@ -1,7 +1,7 @@
 package com.frnz7.restSpring.file.exporter.impl;
 
 import com.frnz7.restSpring.data.dto.PersonDTO;
-import com.frnz7.restSpring.file.exporter.contract.FileExporter;
+import com.frnz7.restSpring.file.exporter.contract.PersonExporter;
 import com.frnz7.restSpring.service.QrCodeService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class PdfExporter implements FileExporter {
+public class PdfExporter implements PersonExporter {
 
     private final QrCodeService qrCodeService;
 
@@ -27,7 +27,7 @@ public class PdfExporter implements FileExporter {
     }
 
     @Override
-    public Resource exportFile(List<PersonDTO> people) throws Exception {
+    public Resource exportPeople(List<PersonDTO> people) throws Exception {
         InputStream inputStream = getClass().getResourceAsStream("/templates/people.jrxml");
         if (inputStream == null) {
             throw new RuntimeException("Template file not found: /templates/people.jrxml");

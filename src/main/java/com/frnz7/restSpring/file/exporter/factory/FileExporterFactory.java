@@ -2,7 +2,7 @@ package com.frnz7.restSpring.file.exporter.factory;
 
 import com.frnz7.restSpring.exception.BadRequestException;
 import com.frnz7.restSpring.file.exporter.MediaTypes;
-import com.frnz7.restSpring.file.exporter.contract.FileExporter;
+import com.frnz7.restSpring.file.exporter.contract.PersonExporter;
 import com.frnz7.restSpring.file.exporter.impl.CsvExporter;
 import com.frnz7.restSpring.file.exporter.impl.PdfExporter;
 import com.frnz7.restSpring.file.exporter.impl.XlsxExporter;
@@ -16,7 +16,7 @@ public class FileExporterFactory {
         this.context = context;
     }
 
-    public FileExporter getExporter(String acceptHeader) throws Exception{
+    public PersonExporter getExporter(String acceptHeader) throws Exception{
         if(acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)){
             //usando injeção de dependencias. Assim nao preciso ficar instaciando toda hora com o "new".
             return context.getBean(XlsxExporter.class);

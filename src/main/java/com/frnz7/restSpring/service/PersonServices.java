@@ -7,7 +7,7 @@ import com.frnz7.restSpring.exception.FileStorageException;
 import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
 
 import com.frnz7.restSpring.exception.BadRequestException;
-import com.frnz7.restSpring.file.exporter.contract.FileExporter;
+import com.frnz7.restSpring.file.exporter.contract.PersonExporter;
 import com.frnz7.restSpring.file.exporter.factory.FileExporterFactory;
 import com.frnz7.restSpring.file.importer.contract.FileImporter;
 import com.frnz7.restSpring.file.importer.factory.FileImporterFactory;
@@ -71,7 +71,7 @@ public class PersonServices {
                 .map(entity ->  parseObject(entity, PersonDTO.class))
                 .orElseThrow(() -> new FileStorageException("No records found for this id"));
         try{
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
             return exporter.exportPerson(person);
         } catch (Exception e) {
             throw new RuntimeException("Error during file export!",e);
@@ -97,8 +97,8 @@ public class PersonServices {
                 .map(person -> parseObject(person, PersonDTO.class))
                 .getContent();
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
-            return exporter.exportFile(people);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPeople(people);
         } catch (Exception e) {
             throw new RuntimeException("Error during file export!", e);
         }
