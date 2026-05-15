@@ -61,11 +61,9 @@ public class EmailSender implements Serializable {
             helper.setTo(recipients.toArray(new InternetAddress[0]));
             helper.setSubject(subject);
             helper.setText(body, true);
-
             if(attachment != null){
                 helper.addAttachment(attachment.getName(), attachment);
             }
-
             mailSender.send(message);
             logger.info("Email sent to %s with the subject '%s''%n'", to, subject);
             reset();
@@ -83,7 +81,6 @@ public class EmailSender implements Serializable {
     }
 
     private ArrayList<InternetAddress> getRecipients(String to) {
-
         ArrayList<InternetAddress> recipientsList = new ArrayList<>();
         String toWithoutSpaces = to.replaceAll("\\s", "");
         StringTokenizer tok = new StringTokenizer(toWithoutSpaces, ";");
