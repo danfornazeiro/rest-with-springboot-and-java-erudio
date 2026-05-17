@@ -4,11 +4,9 @@ import com.frnz7.restSpring.controller.docs.EmailControllerDocs;
 import com.frnz7.restSpring.data.dto.request.EmailRequestDTO;
 import com.frnz7.restSpring.service.EmailService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -29,8 +27,10 @@ public class EmailController implements EmailControllerDocs {
 
     }
 
+    @PostMapping(value = "/withAttachment", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Override
-    public ResponseEntity<String> sendEmailWithAttachment(String emailRequestJson, MultipartFile multipartFile) {
-        return null;
+    public ResponseEntity<String> sendEmailWithAttachment(@RequestParam String emailRequestJson, @RequestParam MultipartFile attachment) {
+        service.setEmailWithAttachment(emailRequestJson, attachment);
+        return new ResponseEntity<>("E-mail with attachment sent with success!", HttpStatus.OK);
     }
 }
