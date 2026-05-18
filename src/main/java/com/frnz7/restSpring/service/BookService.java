@@ -2,10 +2,6 @@ package com.frnz7.restSpring.service;
 
 import com.frnz7.restSpring.controller.BookController;
 import com.frnz7.restSpring.data.dto.BookDTO;
-import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.frnz7.restSpring.exception.BadRequestException;
 import com.frnz7.restSpring.exception.FileStorageException;
 import com.frnz7.restSpring.model.Books;
@@ -19,7 +15,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import static com.frnz7.restSpring.mapper.ObjectMapper.parseObject;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class BookService {
@@ -93,11 +91,6 @@ public class BookService {
         );
         bookRepository.delete(entity);
      }
-
-
-
-
-
 
     private void addHateoasLinks( BookDTO dto) {
         dto.add(linkTo(methodOn(BookController.class).findById(dto.getId())).withSelfRel().withType("GET"));
